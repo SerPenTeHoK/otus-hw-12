@@ -1,61 +1,25 @@
 package ru.sergey_gusarov.hw12.domain.books;
 
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.annotation.Id;
-import java.util.HashSet;
-import java.util.Set;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document
 public class Book {
     @Id
     private String id;
     private String title;
-    private Set<Genre> genres = new HashSet<>();
-    private Set<Author> authors = new HashSet<>();
-    private Set<BookComment> bookComments = new HashSet<>();
+    private List<Genre> genres = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
+    private List<BookComment> bookComments = new ArrayList<>();
 
     public Book() {
     }
 
     public Book(String title) {
         this.title = title;
-    }
-
-    public Book(String id, String title, Set<Genre> genres, Set<Author> authors) {
-        this.id = id;
-        this.title = title;
-        this.genres = genres;
-        this.authors = authors;
-    }
-
-    public Book(String title, Set<Genre> genres, Set<Author> authors) {
-        this.title = title;
-        this.genres = genres;
-        this.authors = authors;
-    }
-
-    public Set<BookComment> getBookComments() {
-        return bookComments;
-    }
-
-    public void setBookComments(Set<BookComment> bookComments) {
-        this.bookComments = bookComments;
-    }
-
-    public Set<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-
-    public Set<Author> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(Set<Author> authors) {
-        this.authors = authors;
     }
 
     public String getId() {
@@ -72,6 +36,30 @@ public class Book {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+
+    public List<BookComment> getBookComments() {
+        return bookComments;
+    }
+
+    public void setBookComments(List<BookComment> bookComments) {
+        this.bookComments = bookComments;
     }
 
     @Override
