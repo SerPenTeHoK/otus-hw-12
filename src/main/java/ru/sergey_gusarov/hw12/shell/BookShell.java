@@ -4,45 +4,54 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import org.springframework.transaction.annotation.Transactional;
+import ru.sergey_gusarov.hw12.domain.books.Book;
 import ru.sergey_gusarov.hw12.repository.books.BookRepository;
+import ru.sergey_gusarov.hw12.service.BookService;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @ShellComponent
 public class BookShell {
-
     @Autowired
-    private BookRepository bookRepository;
+    private final BookService bookService;
+
+    public BookShell(BookService bookService, BookRepository bookRepository) {
+        this.bookService = bookService;
+    }
 
     @ShellMethod("Book count")
     public long bookCount() {
-        return bookRepository.count();
+        return bookService.bookCount();
     }
 
     @ShellMethod("Book get by id")
     public String bookGetById(@ShellOption String id) {
-        return bookRepository.findById(id).toString();
+        return bookService.bookGetById(id).get().toString();
     }
 
     @ShellMethod("Book get by id")
     public String bookGetByTitle(@ShellOption String title) {
-        return bookRepository.findByTitle(title).toString();
+        return bookService.bookGetByTitle(title).toString();
     }
 
     @ShellMethod("Book delete by id")
     public void bookDeleteById(@ShellOption String id) {
-        bookRepository.deleteById(id);
+        bookService.bookDeleteById(id);
     }
 
     @ShellMethod("Book insert")
-    @Transactional
-    public void bookInsert(@ShellOption String title, @ShellOption String authorName, @ShellOption String genreName) {
-        ;
+    public void bookInsert(@ShellOption String title, @ShellOption String genreName , @ShellOption String authorName ) {
+        List genres = Arrays.asList(genreName);
+        List authors = Arrays.asList(authorName);
+        bookService.save(title, genres, authors);
     }
 
     @ShellMethod("Book list")
     public String bookList() {
-        return bookRepository.findAll().toString();
+        return bookService.bookList().toString();
     }
 }
 
