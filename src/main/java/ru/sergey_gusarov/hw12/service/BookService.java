@@ -16,7 +16,7 @@ public interface BookService {
 
     void bookDeleteById(String id);
 
-    Book save(String title, List<Author> authors,  List<Genre> genres);
+    Book save(String title, List<Author> authors, List<Genre> genres);
 
     List<Book> bookList();
 

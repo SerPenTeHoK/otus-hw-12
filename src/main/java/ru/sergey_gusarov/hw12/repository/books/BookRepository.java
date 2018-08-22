@@ -1,7 +1,6 @@
 package ru.sergey_gusarov.hw12.repository.books;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import ru.sergey_gusarov.hw12.domain.books.Book;
 

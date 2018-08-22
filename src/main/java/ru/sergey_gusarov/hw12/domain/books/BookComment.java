@@ -1,7 +1,7 @@
 package ru.sergey_gusarov.hw12.domain.books;
 
 public class BookComment {
-    String text;
+    private String text;
 
     public BookComment() {
     }

@@ -1,6 +1,5 @@
 package ru.sergey_gusarov.hw12.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
@@ -12,17 +11,11 @@ import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
-    // Прокоментируйте, пожалуйста, почеиу
-    // если делаю через конструктор и поле bookRepository с модификаторм final,
-    // то у меня падает с циклической ссылкой
-    /*
-    public BookServiceImpl(BookRepository bookRepository, BookService bookService) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
-    */
 
     @Override
     public long bookCount() {
@@ -45,7 +38,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book save(String title, List<Author> authors,  List<Genre> genres) {
+    public Book save(String title, List<Author> authors, List<Genre> genres) {
         Book book = new Book();
         book.setTitle(title);
         book.setGenres(genres);

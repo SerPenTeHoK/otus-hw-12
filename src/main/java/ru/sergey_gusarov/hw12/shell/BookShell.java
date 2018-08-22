@@ -1,24 +1,19 @@
 package ru.sergey_gusarov.hw12.shell;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.sergey_gusarov.hw12.domain.books.Book;
-import ru.sergey_gusarov.hw12.repository.books.BookRepository;
 import ru.sergey_gusarov.hw12.service.BookService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
 @ShellComponent
 public class BookShell {
-    @Autowired
     private final BookService bookService;
 
-    public BookShell(BookService bookService, BookRepository bookRepository) {
+    public BookShell(BookService bookService) {
         this.bookService = bookService;
     }
 
@@ -43,7 +38,7 @@ public class BookShell {
     }
 
     @ShellMethod("Book insert")
-    public void bookInsert(@ShellOption String title, @ShellOption String genreName , @ShellOption String authorName ) {
+    public void bookInsert(@ShellOption String title, @ShellOption String genreName, @ShellOption String authorName) {
         List genres = Arrays.asList(genreName);
         List authors = Arrays.asList(authorName);
         bookService.save(title, genres, authors);
