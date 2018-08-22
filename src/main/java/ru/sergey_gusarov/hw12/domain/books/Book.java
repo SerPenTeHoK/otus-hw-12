@@ -1,19 +1,22 @@
 package ru.sergey_gusarov.hw12.domain.books;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-@Document
+@Document(collection = "bo")
 public class Book {
     @Id
     private String id;
     private String title;
-    private List<Genre> genres = new ArrayList<>();
-    private List<Author> authors = new ArrayList<>();
-    private List<BookComment> bookComments = new ArrayList<>();
+    private List<Genre> genres;
+    @DBRef
+    private List<Author> authors;
+    private List<BookComment> bookComments;
 
     public Book() {
     }
