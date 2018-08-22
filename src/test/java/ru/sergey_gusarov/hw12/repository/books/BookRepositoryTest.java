@@ -22,26 +22,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
-
-    //BookRepositoryTest(BookRepository bookRepository) {this.bookRepository = bookRepository;    }
-
-    private Book dummyBook1Genre1Author2() {
-        List<Genre> genres = new ArrayList<>(1);
-        genres.add(new Genre("Genre1"));
-        List<Author> authors = new ArrayList<>(2);
-        authors.add(new Author("Author1"));
-        authors.add(new Author("Author2"));
-        Book book = new Book("Title1");
-        book.setAuthors(authors);
-        book.setGenres(genres);
-        return book;
-    }
+    @Autowired
+    private AuthorRepository authorRepository;
 
     private Book dummyBook3Genre1AuthorName3() {
         List<Genre> genres = new ArrayList<>(1);
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
+        authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
         book.setGenres(genres);
@@ -49,7 +38,7 @@ class BookRepositoryTest {
     }
 
     @BeforeEach
-    private void reSetupSchema() {
+    private void reSetup() {
         bookRepository.deleteAll();
         bookRepository.save(dummyBook3Genre1AuthorName3());
     }
@@ -67,8 +56,8 @@ class BookRepositoryTest {
     @DisplayName("Save")
     void save() {
         Book bookCreated = dummyBook3Genre1AuthorName3();
-        List<Book> booksfromDb = bookRepository.findByTitle(bookCreated.getTitle());
-        Book fromDb = booksfromDb.get(0);
+        List<Book> booksFromDb = bookRepository.findByTitle(bookCreated.getTitle());
+        Book fromDb = booksFromDb.get(0);
         assertEquals(bookCreated.getAuthors().get(0).getName(),
                 fromDb.getAuthors().get(0).getName(), "Authors doesn't match");
         assertEquals(bookCreated.getGenres().get(0).getName(),

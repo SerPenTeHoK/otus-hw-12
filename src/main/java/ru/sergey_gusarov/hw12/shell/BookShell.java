@@ -3,9 +3,11 @@ package ru.sergey_gusarov.hw12.shell;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.sergey_gusarov.hw12.domain.books.Author;
+import ru.sergey_gusarov.hw12.domain.books.Genre;
 import ru.sergey_gusarov.hw12.service.BookService;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,10 +40,12 @@ public class BookShell {
     }
 
     @ShellMethod("Book insert")
-    public void bookInsert(@ShellOption String title, @ShellOption String genreName, @ShellOption String authorName) {
-        List genres = Arrays.asList(genreName);
-        List authors = Arrays.asList(authorName);
-        bookService.save(title, genres, authors);
+    public void bookInsert(@ShellOption String title, @ShellOption String authorName, @ShellOption String genreName) {
+        List<Author> authors = new ArrayList<>(1);
+        authors.add(new Author(authorName));
+        List<Genre> genres = new ArrayList<>(1);
+        genres.add(new Genre(genreName));
+        bookService.save(title, authors, genres);
     }
 
     @ShellMethod("Book list")

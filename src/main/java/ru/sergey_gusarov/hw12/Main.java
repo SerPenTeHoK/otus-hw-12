@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories("ru.sergey_gusarov.hw12.repository")
 public class Main {
-
     public static void main(String[] args) throws Exception {
         ApplicationContext context = SpringApplication.run(Main.class);
     }

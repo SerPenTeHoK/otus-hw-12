@@ -11,9 +11,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
 import ru.sergey_gusarov.hw12.domain.books.Genre;
+import ru.sergey_gusarov.hw12.repository.books.AuthorRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +24,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ComponentScan("ru.sergey_gusarov.hw12.service")
 class BookServiceTest {
     @Autowired
-    private  BookService bookService;
-
-   // BookServiceTest(BookService bookService) { this.bookService = bookService; }
-
+    private BookService bookService;
+    @Autowired
+    private AuthorRepository authorRepository;
 
     private Book dummyBook3Genre1AuthorName3() {
         List<Genre> genres = new ArrayList<>(1);
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
+        authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
         book.setGenres(genres);
@@ -45,6 +45,7 @@ class BookServiceTest {
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
+        authors.forEach(author -> authorRepository.save(author));
         Book book = new Book(title);
         book.setAuthors(authors);
         book.setGenres(genres);
@@ -52,12 +53,10 @@ class BookServiceTest {
     }
 
     @BeforeEach
-    private void reSetupSchema() {
+    private void reSetup() {
         bookService.deleteAll();
         Book book = dummyBook3Genre1AuthorName3();
-        List authors = Arrays.asList(book.getAuthors().get(0).getName());
-        List genres = Arrays.asList(book.getGenres().get(0).getName());
-        bookService.save(book.getTitle(), authors, genres);
+        bookService.save(book.getTitle(), book.getAuthors(), book.getGenres());
     }
 
     @Test

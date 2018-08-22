@@ -3,7 +3,7 @@ package ru.sergey_gusarov.hw12.domain.books;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "aut")
+@Document(collection = "author")
 public class Author {
     @Id
     private String id;
@@ -11,6 +11,7 @@ public class Author {
 
     public Author() {
     }
+
     public Author(String name) {
         this.name = name;
     }
