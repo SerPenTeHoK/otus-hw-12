@@ -1,4 +1,4 @@
-package ru.sergey_gusarov.hw12.repository.books;
+package ru.sergey_gusarov.hw12.repository.book;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +12,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
 import ru.sergey_gusarov.hw12.domain.books.Genre;
+import ru.sergey_gusarov.hw12.repository.author.AuthorRepository;
 
 import java.util.ArrayList;
 import java.util.List;

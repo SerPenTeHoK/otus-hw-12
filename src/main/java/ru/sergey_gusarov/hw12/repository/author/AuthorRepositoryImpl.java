@@ -1,4 +1,4 @@
-package ru.sergey_gusarov.hw12.repository.books;
+package ru.sergey_gusarov.hw12.repository.author;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;

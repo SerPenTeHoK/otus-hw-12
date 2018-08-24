@@ -5,8 +5,8 @@ import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
 import ru.sergey_gusarov.hw12.domain.books.BookComment;
 import ru.sergey_gusarov.hw12.domain.books.Genre;
-import ru.sergey_gusarov.hw12.repository.books.AuthorRepository;
-import ru.sergey_gusarov.hw12.repository.books.BookRepository;
+import ru.sergey_gusarov.hw12.repository.author.AuthorRepository;
+import ru.sergey_gusarov.hw12.repository.book.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
