@@ -25,7 +25,6 @@ public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
     @Override
     public Author getAuthorByNum1Method(String authorNum) {
         BasicQuery query = new BasicQuery("{ name : 'AuthorName1' }");
-        List<Author> authors = mongoOperations.find(query, Author.class);
-        return authors.get(0);
+        return mongoOperations.findOne(query, Author.class);
     }
 }
