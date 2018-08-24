@@ -52,5 +52,15 @@ public class BookShell {
     public String bookList() {
         return bookService.bookList().toString();
     }
+
+    @ShellMethod("Book add comment")
+    public void bookAddComment(@ShellOption String bookId, @ShellOption String commentText) {
+        bookService.addComment(bookId, commentText);
+    }
+
+    @ShellMethod("Books by author")
+    public String booksByAuthor(@ShellOption String authorName) {
+        return bookService.findByAuthorName(authorName).toString();
+    }
 }
 

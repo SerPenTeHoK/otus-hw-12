@@ -22,9 +22,9 @@ public class BookComment {
     public String toString() {
         StringBuilder sb = new StringBuilder(60);
         sb.append("BookComment{ ")
-                .append(", text='")
+                .append("text='")
                 .append(getText())
-                .append("' book = ");
+                .append("'}");
         return sb.toString();
     }
 }
