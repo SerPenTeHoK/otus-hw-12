@@ -11,6 +11,6 @@ import java.util.List;
 public interface BookRepository extends MongoRepository<Book, String> {
     List<Book> findByTitle(String title);
 
-    @Query(value="{ 'authors.id' : ?0 }")
+    @Query(value = "{ 'authors.id' : ?0 }")
     List<Book> findByAuthorId(String authorId);
 }

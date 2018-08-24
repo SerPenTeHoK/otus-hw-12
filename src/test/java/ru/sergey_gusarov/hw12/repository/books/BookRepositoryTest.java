@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
@@ -26,6 +27,8 @@ class BookRepositoryTest {
     private BookRepository bookRepository;
     @Autowired
     private AuthorRepository authorRepository;
+    @Autowired
+    private MongoOperations mongoOperations;
 
     private Book dummyBook3Genre1AuthorName3() {
         List<Genre> genres = new ArrayList<>(1);
@@ -103,4 +106,22 @@ class BookRepositoryTest {
         List<Book> books = bookRepository.findByAuthorId(author.getId());
         assertEquals(1L, books.size());
     }
+
+    @Test
+    @DisplayName("Find by author id, if them 2 in book")
+    void findByAuthorIf2InBook() {
+        List<Author> authors = authorRepository.findByName("Author3");
+        Author author = authors.get(0);
+        List<Book> books = bookRepository.findByAuthorId(author.getId());
+        assertEquals(1L, books.size());
+        Book book = books.get(0);
+        Author secondAuthor = new Author("AuthorSecond");
+        mongoOperations.save(secondAuthor);
+        Author authorFromDb = authorRepository.findByName(secondAuthor.getName()).get(0);
+        book.getAuthors().add(authorFromDb);
+        mongoOperations.save(book);
+        books = bookRepository.findByAuthorId(author.getId());
+        assertEquals(1L, books.size());
+    }
+
 }

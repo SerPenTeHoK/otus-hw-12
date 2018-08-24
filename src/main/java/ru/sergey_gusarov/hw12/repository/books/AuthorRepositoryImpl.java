@@ -5,21 +5,27 @@ import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.BasicQuery;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import ru.sergey_gusarov.hw12.domain.books.Book;
+import ru.sergey_gusarov.hw12.domain.books.Author;
 
 import java.util.List;
 
+// Исключительно для тренировки
 public class AuthorRepositoryImpl implements AuthorRepositoryCustom {
     @Autowired
     private MongoOperations mongoOperations;
 
     @Override
-
-    public List<Book> getAuthorAllBookMethod(String authorName) {
-        //BasicQuery query = new BasicQuery("{ age : { $lt : 40 }, name : 'cat' }");
+    public List<Author> getAuthorByNumMethod(String authorNum) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("author").is(authorName));
-        List<Book> books = mongoOperations.find(query, Book.class);
-        return books;
+        query.addCriteria(Criteria.where("name").is(authorNum));
+        List<Author> authors = mongoOperations.find(query, Author.class);
+        return authors;
+    }
+
+    @Override
+    public Author getAuthorByNum1Method(String authorNum) {
+        BasicQuery query = new BasicQuery("{ name : 'AuthorName1' }");
+        List<Author> authors = mongoOperations.find(query, Author.class);
+        return authors.get(0);
     }
 }

@@ -13,6 +13,7 @@ public class Book {
     private String id;
     private String title;
     private List<Genre> genres = new ArrayList<>();
+    // А как вы предпочитаете? set или list - по логике должен быть set, но удобней работать с list.
     @DBRef
     private List<Author> authors = new ArrayList<>();
     private List<BookComment> bookComments = new ArrayList<>();

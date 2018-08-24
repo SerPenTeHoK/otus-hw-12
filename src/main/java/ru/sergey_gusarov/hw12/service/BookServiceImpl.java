@@ -1,6 +1,5 @@
 package ru.sergey_gusarov.hw12.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
@@ -15,11 +14,11 @@ import java.util.Optional;
 @Service
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
-    @Autowired
-    private AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -70,7 +69,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void addComment(String id, String comment) {
-        Book book =  bookRepository.findById(id).get();
+        Book book = bookRepository.findById(id).get();
         book.getBookComments().add(new BookComment(comment));
         bookRepository.save(book);
     }

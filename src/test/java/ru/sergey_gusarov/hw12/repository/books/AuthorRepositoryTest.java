@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
@@ -55,5 +56,22 @@ class AuthorRepositoryTest {
         List<Author> authorsFromDb = authorRepository.findByName(AUTHOR_NAME);
         assertEquals(1L, authorsFromDb.size());
         assertEquals(AUTHOR_NAME, authorsFromDb.get(0).getName(), "Name not eq");
+    }
+
+    // Тесты для методов, которые для тренировки
+    @Test
+    @DisplayName("Find by ?num?")
+    void getAuthorByNumMethod() {
+        List<Author> authorsFromDb = authorRepository.getAuthorByNumMethod(AUTHOR_NAME);
+        assertEquals(1L, authorsFromDb.size());
+        assertEquals(AUTHOR_NAME, authorsFromDb.get(0).getName(), "Name not eq");
+    }
+
+    @Test
+    @DisplayName("Find by ?num1?")
+    void getAuthorByNum1Method() {
+        Author authorFromDb = authorRepository.getAuthorByNum1Method(AUTHOR_NAME);
+        assertNotNull(authorFromDb, "Doesn't find");
+        assertEquals(AUTHOR_NAME, authorFromDb.getName(), "Name not eq");
     }
 }
