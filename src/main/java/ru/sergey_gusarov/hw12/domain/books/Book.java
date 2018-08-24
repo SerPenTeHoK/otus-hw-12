@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document(collection = "book")
@@ -11,10 +12,10 @@ public class Book {
     @Id
     private String id;
     private String title;
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
     @DBRef
-    private List<Author> authors;
-    private List<BookComment> bookComments;
+    private List<Author> authors = new ArrayList<>();
+    private List<BookComment> bookComments = new ArrayList<>();
 
     public Book() {
     }

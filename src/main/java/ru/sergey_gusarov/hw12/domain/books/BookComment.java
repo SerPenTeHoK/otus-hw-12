@@ -3,6 +3,10 @@ package ru.sergey_gusarov.hw12.domain.books;
 public class BookComment {
     private String text;
 
+    public BookComment(String text) {
+        this.text = text;
+    }
+
     public BookComment() {
     }
 

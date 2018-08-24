@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
+import ru.sergey_gusarov.hw12.domain.books.BookComment;
 import ru.sergey_gusarov.hw12.domain.books.Genre;
 import ru.sergey_gusarov.hw12.repository.books.AuthorRepository;
 import ru.sergey_gusarov.hw12.repository.books.BookRepository;
@@ -66,4 +67,19 @@ public class BookServiceImpl implements BookService {
     public void deleteAll() {
         bookRepository.deleteAll();
     }
+
+    @Override
+    public void addComment(String id, String comment) {
+        Book book =  bookRepository.findById(id).get();
+        book.getBookComments().add(new BookComment(comment));
+        bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> findByAuthorName(String authorName) {
+        List<Author> authors = authorRepository.findByName(authorName);
+        Author author = authors.get(0);
+        return bookRepository.findByAuthorId(author.getId());
+    }
+
 }

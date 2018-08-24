@@ -33,6 +33,7 @@ class BookServiceTest {
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
+        authors.add(new Author("Author4"));
         authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
@@ -55,6 +56,7 @@ class BookServiceTest {
     @BeforeEach
     private void reSetup() {
         bookService.deleteAll();
+        authorRepository.deleteAll();
         Book book = dummyBook3Genre1AuthorName3();
         bookService.save(book.getTitle(), book.getAuthors(), book.getGenres());
     }
@@ -76,8 +78,8 @@ class BookServiceTest {
         Book bookCreated = dummyBook3Genre1AuthorName3();
         List<Book> booksfromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
         Book fromDbByTitle = booksfromDbByTitle.get(0);
-        Optional<Book> orionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
-        Book fromDb = orionaBookfromDb.get();
+        Optional<Book> optionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
+        Book fromDb = optionaBookfromDb.get();
         assertEquals(bookCreated.getAuthors().get(0).getName(),
                 fromDb.getAuthors().get(0).getName(), "Authors doesn't match");
         assertEquals(bookCreated.getGenres().get(0).getName(),
@@ -88,10 +90,10 @@ class BookServiceTest {
     @DisplayName("Delete by id")
     void bookDeleteById() {
         Book bookCreated = dummyBook3Genre1AuthorName3();
-        List<Book> booksfromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
-        Book fromDbByTitle = booksfromDbByTitle.get(0);
-        Optional<Book> orionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
-        Book fromDb = orionaBookfromDb.get();
+        List<Book> booksFromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
+        Book fromDbByTitle = booksFromDbByTitle.get(0);
+        Optional<Book> optionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
+        Book fromDb = optionaBookfromDb.get();
         bookService.bookDeleteById(fromDb.getId());
         long count = bookService.bookCount();
         assertEquals(0L, count);
@@ -104,5 +106,21 @@ class BookServiceTest {
         long count = books.size();
         assertEquals(1L, count);
         assertEquals(books.get(0).getTitle(), "Title3", "Title not valid");
+    }
+    @Test
+    @DisplayName("Add comment")
+    void addComment() {
+        List<Book> books = bookService.bookList();
+        bookService.addComment(books.get(0).getId(), "Comment1");
+        books = bookService.bookList();
+        assertEquals(books.get(0).getBookComments().get(0).getText(), "Comment1", "Book.Comment s not stored");
+    }
+
+    @Test
+    @DisplayName("Add comment")
+    void findByAuthorName() {
+        List<Book> books = bookService.bookList();
+        Book book = books.get(0);
+        List<Book> booksFromDb = bookService.findByAuthorName(book.getAuthors().get(0).getName());
     }
 }

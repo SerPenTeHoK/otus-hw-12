@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
@@ -19,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @DataMongoTest
+@SpringBootTest
 class BookRepositoryTest {
     @Autowired
     private BookRepository bookRepository;
@@ -30,6 +32,7 @@ class BookRepositoryTest {
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
+        authors.add(new Author("Author4"));
         authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
@@ -40,6 +43,7 @@ class BookRepositoryTest {
     @BeforeEach
     private void reSetup() {
         bookRepository.deleteAll();
+        authorRepository.deleteAll();
         bookRepository.save(dummyBook3Genre1AuthorName3());
     }
 
@@ -68,10 +72,10 @@ class BookRepositoryTest {
     @DisplayName("Get by id")
     void getById() {
         Book bookCreated = dummyBook3Genre1AuthorName3();
-        List<Book> booksfromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
-        Book fromDbByTitle = booksfromDbByTitle.get(0);
-        Optional<Book> orionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
-        Book fromDb = orionaBookfromDb.get();
+        List<Book> booksFromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
+        Book fromDbByTitle = booksFromDbByTitle.get(0);
+        Optional<Book> optionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
+        Book fromDb = optionaBookfromDb.get();
         assertEquals(bookCreated.getAuthors().get(0).getName(),
                 fromDb.getAuthors().get(0).getName(), "Authors doesn't match");
         assertEquals(bookCreated.getGenres().get(0).getName(),
@@ -82,14 +86,21 @@ class BookRepositoryTest {
     @DisplayName("Delete by id")
     void deleteById() {
         Book bookCreated = dummyBook3Genre1AuthorName3();
-        List<Book> booksfromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
-        Book fromDbByTitle = booksfromDbByTitle.get(0);
-        Optional<Book> orionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
-        Book fromDb = orionaBookfromDb.get();
+        List<Book> booksFromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
+        Book fromDbByTitle = booksFromDbByTitle.get(0);
+        Optional<Book> optionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
+        Book fromDb = optionaBookfromDb.get();
         bookRepository.deleteById(fromDb.getId());
         long count = bookRepository.count();
         assertEquals(0L, count);
     }
 
-
+    @Test
+    @DisplayName("Find by author id")
+    void findByAuthor() {
+        List<Author> authors = authorRepository.findByName("Author3");
+        Author author = authors.get(0);
+        List<Book> books = bookRepository.findByAuthorId(author.getId());
+        assertEquals(1L, books.size());
+    }
 }

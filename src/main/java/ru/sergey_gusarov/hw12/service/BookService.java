@@ -21,4 +21,8 @@ public interface BookService {
     List<Book> bookList();
 
     void deleteAll();
+
+    void addComment(String id, String comment);
+
+    List<Book> findByAuthorName(String authorName);
 }
