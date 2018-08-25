@@ -5,6 +5,7 @@ import ru.sergey_gusarov.hw12.domain.books.Author;
 import ru.sergey_gusarov.hw12.domain.books.Book;
 import ru.sergey_gusarov.hw12.domain.books.BookComment;
 import ru.sergey_gusarov.hw12.domain.books.Genre;
+import ru.sergey_gusarov.hw12.exception.NotFoundException;
 import ru.sergey_gusarov.hw12.repository.author.AuthorRepository;
 import ru.sergey_gusarov.hw12.repository.book.BookRepository;
 
@@ -77,6 +78,8 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> findByAuthorName(String authorName) {
         List<Author> authors = authorRepository.findByName(authorName);
+        if(authors.isEmpty())
+            throw new NotFoundException();
         Author author = authors.get(0);
         return bookRepository.findByAuthorId(author.getId());
     }
