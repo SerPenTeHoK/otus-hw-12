@@ -13,7 +13,7 @@ public class Book {
     @Id
     @Indexed
     private String id;
-    @Indexed(unique = true)
+    @Indexed
     private String title;
     private List<Genre> genres = new ArrayList<>();
     // А как вы предпочитаете? set или list - по логике должен быть set, но удобней работать с list.
