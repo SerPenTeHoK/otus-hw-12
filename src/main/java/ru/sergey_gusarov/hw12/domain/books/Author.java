@@ -1,12 +1,15 @@
 package ru.sergey_gusarov.hw12.domain.books;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "author")
 public class Author {
     @Id
+    @Indexed
     private String id;
+    @Indexed(unique = true)
     private String name;
 
     public Author() {
@@ -35,7 +38,7 @@ public class Author {
     @Override
     public String toString() {
         return "Author{" +
-                "id="+ id +
+                "id=" + id +
                 ", name='" + name +
                 "'}";
     }

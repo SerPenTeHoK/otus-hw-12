@@ -31,13 +31,14 @@ class BookRepositoryTest {
     @Autowired
     private MongoOperations mongoOperations;
 
-    private Book dummyBook3Genre1AuthorName3() {
+    private Book dummyBook3Genre1AuthorName3(boolean isSaveAuthors) {
         List<Genre> genres = new ArrayList<>(1);
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
         authors.add(new Author("Author4"));
-        authors.forEach(author -> authorRepository.save(author));
+        if(isSaveAuthors)
+            authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
         book.setGenres(genres);
@@ -48,7 +49,7 @@ class BookRepositoryTest {
     private void reSetup() {
         bookRepository.deleteAll();
         authorRepository.deleteAll();
-        bookRepository.save(dummyBook3Genre1AuthorName3());
+        bookRepository.save(dummyBook3Genre1AuthorName3(true));
     }
 
     @Test
@@ -63,7 +64,7 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Save")
     void save() {
-        Book bookCreated = dummyBook3Genre1AuthorName3();
+        Book bookCreated = dummyBook3Genre1AuthorName3(false);
         List<Book> booksFromDb = bookRepository.findByTitle(bookCreated.getTitle());
         Book fromDb = booksFromDb.get(0);
         assertEquals(bookCreated.getAuthors().get(0).getName(),
@@ -75,11 +76,11 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Get by id")
     void getById() {
-        Book bookCreated = dummyBook3Genre1AuthorName3();
+        Book bookCreated = dummyBook3Genre1AuthorName3(false);
         List<Book> booksFromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
         Book fromDbByTitle = booksFromDbByTitle.get(0);
-        Optional<Book> optionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
-        Book fromDb = optionaBookfromDb.get();
+        Optional<Book> optionalBookFromDb = bookRepository.findById(fromDbByTitle.getId());
+        Book fromDb = optionalBookFromDb.get();
         assertEquals(bookCreated.getAuthors().get(0).getName(),
                 fromDb.getAuthors().get(0).getName(), "Authors doesn't match");
         assertEquals(bookCreated.getGenres().get(0).getName(),
@@ -89,11 +90,11 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Delete by id")
     void deleteById() {
-        Book bookCreated = dummyBook3Genre1AuthorName3();
+        Book bookCreated = dummyBook3Genre1AuthorName3(false);
         List<Book> booksFromDbByTitle = bookRepository.findByTitle(bookCreated.getTitle());
         Book fromDbByTitle = booksFromDbByTitle.get(0);
-        Optional<Book> optionaBookfromDb = bookRepository.findById(fromDbByTitle.getId());
-        Book fromDb = optionaBookfromDb.get();
+        Optional<Book> optionalBookFromDb = bookRepository.findById(fromDbByTitle.getId());
+        Book fromDb = optionalBookFromDb.get();
         bookRepository.deleteById(fromDb.getId());
         long count = bookRepository.count();
         assertEquals(0L, count);

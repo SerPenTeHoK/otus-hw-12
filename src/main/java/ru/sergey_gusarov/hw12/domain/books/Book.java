@@ -1,6 +1,7 @@
 package ru.sergey_gusarov.hw12.domain.books;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -10,7 +11,9 @@ import java.util.List;
 @Document(collection = "book")
 public class Book {
     @Id
+    @Indexed
     private String id;
+    @Indexed(unique = true)
     private String title;
     private List<Genre> genres = new ArrayList<>();
     // А как вы предпочитаете? set или list - по логике должен быть set, но удобней работать с list.

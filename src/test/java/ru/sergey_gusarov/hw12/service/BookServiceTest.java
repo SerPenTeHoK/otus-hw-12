@@ -28,24 +28,25 @@ class BookServiceTest {
     @Autowired
     private AuthorRepository authorRepository;
 
-    private Book dummyBook3Genre1AuthorName3() {
+    private Book dummyBook3Genre1AuthorName3(boolean isSaveAuthors) {
         List<Genre> genres = new ArrayList<>(1);
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
         authors.add(new Author("Author3"));
         authors.add(new Author("Author4"));
-        authors.forEach(author -> authorRepository.save(author));
+        if(isSaveAuthors)
+            authors.forEach(author -> authorRepository.save(author));
         Book book = new Book("Title3");
         book.setAuthors(authors);
         book.setGenres(genres);
         return book;
     }
 
-    private Book dummyBookTitleGenre1AuthorName3(String title) {
+    private Book dummyBookTitleGenre1AuthorName3(String title, String authorName) {
         List<Genre> genres = new ArrayList<>(1);
         genres.add(new Genre("Genre1"));
         List<Author> authors = new ArrayList<>(1);
-        authors.add(new Author("Author3"));
+        authors.add(new Author(authorName));
         authors.forEach(author -> authorRepository.save(author));
         Book book = new Book(title);
         book.setAuthors(authors);
@@ -57,15 +58,15 @@ class BookServiceTest {
     private void reSetup() {
         bookService.deleteAll();
         authorRepository.deleteAll();
-        Book book = dummyBook3Genre1AuthorName3();
+        Book book = dummyBook3Genre1AuthorName3(true);
         bookService.save(book.getTitle(), book.getAuthors(), book.getGenres());
     }
 
     @Test
     @DisplayName("Count")
     void bookCount() {
-        Book book1 = dummyBookTitleGenre1AuthorName3("Title1");
-        Book book2 = dummyBookTitleGenre1AuthorName3("Title2");
+        Book book1 = dummyBookTitleGenre1AuthorName3("Title1", "Author01");
+        Book book2 = dummyBookTitleGenre1AuthorName3("Title2", "Author02");
         bookService.save(book1.getTitle(), book1.getAuthors(), book1.getGenres());
         bookService.save(book2.getTitle(), book2.getAuthors(), book2.getGenres());
         long count = bookService.bookCount();
@@ -75,11 +76,11 @@ class BookServiceTest {
     @Test
     @DisplayName("Get by id")
     void bookGetById() {
-        Book bookCreated = dummyBook3Genre1AuthorName3();
-        List<Book> booksfromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
-        Book fromDbByTitle = booksfromDbByTitle.get(0);
-        Optional<Book> optionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
-        Book fromDb = optionaBookfromDb.get();
+        Book bookCreated = dummyBook3Genre1AuthorName3(false);
+        List<Book> booksFromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
+        Book fromDbByTitle = booksFromDbByTitle.get(0);
+        Optional<Book> optionalBookFromDb = bookService.bookGetById(fromDbByTitle.getId());
+        Book fromDb = optionalBookFromDb.get();
         assertEquals(bookCreated.getAuthors().get(0).getName(),
                 fromDb.getAuthors().get(0).getName(), "Authors doesn't match");
         assertEquals(bookCreated.getGenres().get(0).getName(),
@@ -89,11 +90,11 @@ class BookServiceTest {
     @Test
     @DisplayName("Delete by id")
     void bookDeleteById() {
-        Book bookCreated = dummyBook3Genre1AuthorName3();
+        Book bookCreated = dummyBook3Genre1AuthorName3(false);
         List<Book> booksFromDbByTitle = bookService.bookGetByTitle(bookCreated.getTitle());
         Book fromDbByTitle = booksFromDbByTitle.get(0);
-        Optional<Book> optionaBookfromDb = bookService.bookGetById(fromDbByTitle.getId());
-        Book fromDb = optionaBookfromDb.get();
+        Optional<Book> optionalBookFromDb = bookService.bookGetById(fromDbByTitle.getId());
+        Book fromDb = optionalBookFromDb.get();
         bookService.bookDeleteById(fromDb.getId());
         long count = bookService.bookCount();
         assertEquals(0L, count);
