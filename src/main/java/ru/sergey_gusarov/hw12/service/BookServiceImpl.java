@@ -23,27 +23,27 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public long bookCount() {
+    public long count() {
         return bookRepository.count();
     }
 
     @Override
-    public Optional<Book> bookGetById(String id) {
+    public Optional<Book> findById(String id) {
         return bookRepository.findById(id);
     }
 
     @Override
-    public List<Book> bookGetByTitle(String title) {
+    public List<Book> findByTitle(String title) {
         return bookRepository.findByTitle(title);
     }
 
     @Override
-    public void bookDeleteById(String id) {
+    public void deleteById(String id) {
         bookRepository.deleteById(id);
     }
 
     @Override
-    public Book save(String title, List<Author> authors, List<Genre> genres) {
+    public Book add(String title, List<Author> authors, List<Genre> genres) {
         Book book = new Book();
         book.setTitle(title);
         authors.forEach(author -> {
@@ -59,7 +59,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> bookList() {
+    public Book save(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public List<Book> findAll() {
         return bookRepository.findAll();
     }
 
